@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vevn 
+venv_covid_parana/
+
+# vscode 
+.vscode/
