@@ -9,57 +9,6 @@ from informe_covid import InformeCovid
 from enderecos import uri_medias_moveis
 import datetime
 
-
-def executa_prophet(dataframe, cidade):
-    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
-    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
-    
-    modelo = Prophet()
-    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
-    
-
-    dataframe.columns = ['ds','y']
-    modelo_treinado = modelo.fit(dataframe)
-
-    futuro = modelo_treinado.make_future_dataframe(12, freq='M')
-    resultado_prophet = modelo_treinado.predict(futuro)
-
-    fig, ax = plt.subplots()
-    modelo_treinado.plot(
-        resultado_prophet[['ds','yhat','yhat_lower','yhat_upper']],
-        ax = ax
-    )
-
-    ax.figure.set_size_inches(10,6)
-    ax.set_ylabel('Quantidade de casos', fontsize= 18)
-    ax.set_xlabel('Data de Confirmação', fontsize = 18)
-    ax.legend(['Casos anteriores','Curva ajustada','Intervalo Confiança'])
-    ax.set_title(f'Estimativa de casos para a cidade - {cidade.title()}', fontsize=20, pad = 20)
-
-    return fig
-
-
-def executa_pca(dataframe, cidade):
-    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
-    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
-    
-    modelo = Prophet()
-    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
-    
-
-    dataframe.columns = ['ds','y']
-    modelo_treinado = modelo.fit(dataframe)
-
-    futuro = modelo_treinado.make_future_dataframe(12, freq='M')
-    resultado_prophet = modelo_treinado.predict(futuro)
-    fig, ax = plt.subplots()
-    fig = modelo_treinado.plot_components(
-        resultado_prophet
-    )
-
-    return fig
-
-
 # Definições 
 hoje = datetime.date.today()
 
@@ -135,6 +84,56 @@ def exibe_evolucao_casos(dataframe, cidade):
     return fig
 
 
+
+def executa_prophet(dataframe, cidade):
+    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
+    
+    modelo = Prophet()
+    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
+    
+
+    dataframe.columns = ['ds','y']
+    modelo_treinado = modelo.fit(dataframe)
+
+    futuro = modelo_treinado.make_future_dataframe(5, freq='M')
+    resultado_prophet = modelo_treinado.predict(futuro)
+
+    fig, ax = plt.subplots()
+    modelo_treinado.plot(
+        resultado_prophet[['ds','yhat','yhat_lower','yhat_upper']],
+        ax = ax
+    )
+    ax.figure.set_size_inches(10,6)
+    ax.set_ylabel('Quantidade de casos', fontsize= 18)
+    ax.set_xlabel('Data de Confirmação', fontsize = 18)
+    ax.legend(['Casos anteriores','Curva ajustada','Intervalo Confiança'])
+    ax.set_title(f'Estimativa de casos para {cidade.title()}', fontsize=20, pad = 20)
+
+    return fig
+
+
+def executa_pca(dataframe, cidade):
+    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
+    
+    modelo = Prophet()
+    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
+    
+
+    dataframe.columns = ['ds','y']
+    modelo_treinado = modelo.fit(dataframe)
+
+    futuro = modelo_treinado.make_future_dataframe(5, freq='M')
+    resultado_prophet = modelo_treinado.predict(futuro)
+    fig, ax = plt.subplots()
+    fig = modelo_treinado.plot_components(
+        resultado_prophet
+    )
+
+    return fig
+
+
 def main():
     st.title('Covid no Estado do Paraná e região')    
     apresentacao()
@@ -151,10 +150,7 @@ def main():
     if opcao_estimativas == 'Sim':
         st.title('Estimando Número de casos - (ARIMA)')
         st.text("""
-        Esta etapa pode demorar alguns segundos. A depender
-        da quantidade de dados disponíveis em cada cidade 
-        o modelo ARIMA vai tentar estimar a possível quantidade de casos
-        para os próximos 6 meses.
+        Esta etapa pode demorar alguns segundos. A depender da quantidade de dados disponíveis em cada cidade o modelo ARIMA vai tentar estimar a possível quantidade de casos para os próximos 6 meses.
         """)
         figura_prophet = executa_prophet(dados_covid, opcao_cidade)
         st.pyplot(figura_prophet)
