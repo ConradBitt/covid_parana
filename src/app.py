@@ -20,18 +20,22 @@ hoje = datetime.date.today()
 
 def apresentacao():
     st.markdown('''
-        Este trabalho tem como objetivo dar um panorâma sobre a
-        situação sanitária com respeito ao número de casos em
-        cada cidade do estado do paraná. As informações são
-        coletadas da secretaria de saúde do estado.
+        Este trabalho tem como objetivo dar um panorama sobre a
+        situação sanitária com respeito ao número de casos de COVID-19 em
+        cada cidade do estado do Paraná. As informações são
+        coletadas da secretaria de saúde do estado e são atualizadas a cada 
+        quatro dias.
 
         Você pode consultar a situação de cada cidade na barra de 
-        seleção ao lado.
+        seleção ao lado. Algumas cidades não pertencem ao estado pois
+        é possível que o paciente tenha feito um teste fora das regionais 
+        de saúde do Paraná.
     ''')
 
 def fonte_informações():
     st.markdown('Fonte de informação:')
     st.markdown(' 1. [Secretaria de Saúde Governo do Estado do Paraná](https://www.saude.pr.gov.br/Pagina/Coronavirus-COVID-19)')
+    st.sidebar.markdown('Feito por [Conrado Bittencourt](https://github.com/ConradBitt)')
     
 
 def carrega_medias_moveis_cidades():
