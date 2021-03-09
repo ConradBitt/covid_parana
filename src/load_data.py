@@ -1,3 +1,6 @@
+import datetime
+
+
 def converte_variaveis_em_datas(dataframe):
     for variavel in dataframe.columns:
         if 'DATA' in variavel:
