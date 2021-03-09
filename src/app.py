@@ -1,13 +1,63 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px 
+from fbprophet import Prophet
+from fbprophet.plot import plot_plotly
+
 from matplotlib import pyplot as plt
-
-
 from informe_covid import InformeCovid
 from enderecos import uri_medias_moveis
-
 import datetime
+
+
+def executa_prophet(dataframe, cidade):
+    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
+    
+    modelo = Prophet()
+    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
+    
+
+    dataframe.columns = ['ds','y']
+    modelo_treinado = modelo.fit(dataframe)
+
+    futuro = modelo_treinado.make_future_dataframe(12, freq='M')
+    resultado_prophet = modelo_treinado.predict(futuro)
+
+    fig, ax = plt.subplots()
+    modelo_treinado.plot(
+        resultado_prophet[['ds','yhat','yhat_lower','yhat_upper']],
+        ax = ax
+    )
+
+    ax.figure.set_size_inches(10,6)
+    ax.set_ylabel('Quantidade de casos', fontsize= 18)
+    ax.set_xlabel('Data de Confirmação', fontsize = 18)
+    ax.legend(['Casos anteriores','Curva ajustada','Intervalo Confiança'])
+    ax.set_title(f'Estimativa de casos para a cidade - {cidade.title()}', fontsize=20, pad = 20)
+
+    return fig
+
+
+def executa_pca(dataframe, cidade):
+    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
+    
+    modelo = Prophet()
+    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
+    
+
+    dataframe.columns = ['ds','y']
+    modelo_treinado = modelo.fit(dataframe)
+
+    futuro = modelo_treinado.make_future_dataframe(12, freq='M')
+    resultado_prophet = modelo_treinado.predict(futuro)
+    fig, ax = plt.subplots()
+    fig = modelo_treinado.plot_components(
+        resultado_prophet
+    )
+
+    return fig
 
 
 # Definições 
@@ -62,7 +112,6 @@ def carrega_dados_gov_pr():
         return carrega_medias_moveis_cidades()
         
     
-    
 
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
@@ -89,20 +138,59 @@ def exibe_evolucao_casos(dataframe, cidade):
 def main():
     st.title('Covid no Estado do Paraná e região')    
     apresentacao()
-    
+
     dados_covid = carrega_dados_gov_pr()
-
     cidades = cidades_do_parana(dados_covid)
-    
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
-
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
-
     st.plotly_chart(figura_cidade)
+    fonte_informações()
+
+    
+    opcao_estimativas = st.sidebar.selectbox('Deseja realizar estimativas de casos?', ['Não','Sim'])
+    if opcao_estimativas == 'Sim':
+        st.title('Estimando Número de casos - (ARIMA)')
+        st.text("""
+        Esta etapa pode demorar alguns segundos. A depender
+        da quantidade de dados disponíveis em cada cidade 
+        o modelo ARIMA vai tentar estimar a possível quantidade de casos
+        para os próximos 6 meses.
+        """)
+        figura_prophet = executa_prophet(dados_covid, opcao_cidade)
+        st.pyplot(figura_prophet)
+
+        st.markdown("""
+        #### Comentário sobre estimador ARIMA
+        > Note que alguns casos podem pode estar fora do intervalor
+        de confiança, isto acontece não só porque a quantidade de dados
+        disponível pode ser pequena, como também pode ocorrer devido
+        a erros de estimativas de sasonalidade, tendência e ruido.
+        """)
+
+        st.title('Análise de Componente Principal')
+        st.text("""
+        As componentes principais indicam não só a tendência do numero 
+        de casos da cidade, mas também como esta se comportanto a semana 
+        e o mês. O intervalo de tempo para análise da tendência é de 14 dias.
+        """)
+        figura_pca = executa_pca(dados_covid, opcao_cidade)
+        
+        st.pyplot(figura_pca)
+        st.markdown("""
+        #### Comentário sobre as componentes principais
+        > Os graficos acima tentam decompor a série temporam em suas componentes
+        principais. Indica a tendência, sasonalidade semanal e a sasonalidade anual.
+        A tendiência indica a basicamente a taxa de variação dos número de casos confirmados.
+        Já a sasonalidade semanal e mensal tentam captar quais os momentos de queda e aumento
+        no número de casos.
+        """)
+
+
+
 
 
 if __name__ == '__main__':
     main()
-    fonte_informações()
+    
 
 
