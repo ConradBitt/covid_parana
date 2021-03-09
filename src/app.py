@@ -34,7 +34,6 @@ def apresentacao():
 def fonte_informações():
     st.markdown('Fonte de informação:')
     st.markdown(' 1. [Secretaria de Saúde Governo do Estado do Paraná](https://www.saude.pr.gov.br/Pagina/Coronavirus-COVID-19)')
-    st.sidebar.markdown('Feito por [Conrado Bittencourt](https://github.com/ConradBitt)')
     
 
 def carrega_medias_moveis_cidades():
@@ -176,6 +175,7 @@ def executa_estimativas(dados_covid, opcao_cidade):
 def main():
     st.title('Covid no Estado do Paraná e região')    
     apresentacao()
+    contato()
 
     dados_covid = carrega_dados_gov_pr()
     cidades = cidades_do_parana(dados_covid)
@@ -196,7 +196,11 @@ def main():
         estimativas.
         """)
 
-    
+def contato():
+    st.sidebar.markdown(
+        '*Este projeto ainda esta em desenvolvimento, ficaria grato com a contribuição*')
+    st.sidebar.markdown('Repositorio:[COVID-19 No PR e Região](https://github.com/ConradBitt/covid_parana)')
+    st.sidebar.markdown('Feito por [Conrado Bittencourt](https://github.com/ConradBitt)')
 
 
 
@@ -205,5 +209,6 @@ def main():
 if __name__ == '__main__':
     main()
     fonte_informações()
+
 
 
