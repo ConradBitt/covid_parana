@@ -58,11 +58,12 @@ def carrega_dados_gov_pr():
             informes_covid = informes_covid.set_index('DATA_CONFIRMACAO_DIVULGACAO')
 
         return informes_covid
+    else:
+        return carrega_medias_moveis_cidades()
     except:
 
         raise Exception('Não foi possível carregar os dados de hoje.')
-    else:
-        return carrega_medias_moveis_cidades()
+    
 
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
