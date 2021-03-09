@@ -46,6 +46,21 @@ def carrega_medias_moveis_cidades():
 
     return medias_moveis
 
+
+def carrega_dados_gov_pr():
+    informes = InformeCovid()
+
+    try:
+        informes_covid = informes.carrega_informe(hoje.year, hoje.month, hoje.day - 2)
+
+        if 'DATA_CONFIRMACAO_DIVULGACAO' in informes_covid.columns:
+            informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_CONFIRMACAO_DIVULGACAO'])
+            informes_covid = informes_covid.set_index('DATA_CONFIRMACAO_DIVULGACAO')
+
+        return informes_covid
+    except:
+        raise Exception('Não foi possível carregar os dados de hoje.')
+
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
 
@@ -86,4 +101,6 @@ def main():
 if __name__ == '__main__':
     main()
     fonte_informações()
+
+    carrega_dados_gov_pr()
 
