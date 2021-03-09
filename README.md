@@ -1,5 +1,5 @@
 # COVID-19 No Estado do Parana e região
-
+## [Acesse Aqui: COVID-19 No Estado do Parana e região](https://share.streamlit.io/conradbitt/covid_parana/main/src/app.py)
 Este trabalho tem como objetivo dar um panorama sobre a situação sanitária com respeito ao número de casos de COVID-19 em cada cidade do estado do Paraná. As informações são coletadas da secretaria de saúde do estado e são atualizadas a cada quatro dias.
 
 ## Informações Principais
