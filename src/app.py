@@ -124,7 +124,7 @@ def executa_pca(dataframe, cidade):
     dataframe.columns = ['ds','y']
     modelo_treinado = modelo.fit(dataframe)
 
-    futuro = modelo_treinado.make_future_dataframe(5, freq='M')
+    futuro = modelo_treinado.make_future_dataframe(14, freq='D')
     resultado_prophet = modelo_treinado.predict(futuro)
     fig, ax = plt.subplots()
     fig = modelo_treinado.plot_components(
@@ -132,6 +132,45 @@ def executa_pca(dataframe, cidade):
     )
 
     return fig
+
+def executa_estimativas(dados_covid, opcao_cidade):
+    st.title('Estimando Número de casos - (ARIMA)')
+    st.text("""
+    Esta etapa pode demorar alguns segundos.
+    A depender da quantidade de dados disponíveis em cada cidade
+    o modelo vai tentar estimar a possível quantidade de casos
+    para os próximos 6 meses.
+    """)
+    figura_prophet = executa_prophet(dados_covid, opcao_cidade)
+    st.pyplot(figura_prophet)
+
+    st.markdown("""
+    #### Comentário sobre estimador ARIMA
+    > Note que alguns casos podem pode estar fora do intervalor
+    de confiança, isto acontece não só porque a quantidade de dados
+    disponível pode ser pequena, como também pode ocorrer devido
+    a erros de estimativas de sasonalidade, tendência e ruido.
+    """)
+
+    st.title('Análise de Componente Principal')
+    st.text("""
+    As componentes principais indicam não só a tendência do numero 
+    de casos da cidade, mas também como esta se comportanto as semanas 
+    e os mêses. O intervalo para a análise da componente principal 
+    estima os próximos 14 dias.
+    """)
+    figura_pca = executa_pca(dados_covid, opcao_cidade)
+    
+    st.pyplot(figura_pca)
+    st.markdown("""
+    #### Comentário sobre as componentes principais
+    > Os graficos acima tentam decompor a série temporam em suas componentes
+    principais. Indica a tendência, sasonalidade semanal e a sasonalidade anual.
+    A tendiência indica a basicamente a taxa de variação dos número de casos confirmados.
+    Já a sasonalidade semanal e mensal tentam captar quais os momentos de queda e aumento
+    no número de casos.
+    """)
+
 
 
 def main():
@@ -148,38 +187,17 @@ def main():
     
     opcao_estimativas = st.sidebar.selectbox('Deseja realizar estimativas de casos?', ['Não','Sim'])
     if opcao_estimativas == 'Sim':
-        st.title('Estimando Número de casos - (ARIMA)')
+        executa_estimativas(dados_covid, opcao_cidade)
+        st.markdown('## Comentários finais')
         st.text("""
-        Esta etapa pode demorar alguns segundos. A depender da quantidade de dados disponíveis em cada cidade o modelo ARIMA vai tentar estimar a possível quantidade de casos para os próximos 6 meses.
-        """)
-        figura_prophet = executa_prophet(dados_covid, opcao_cidade)
-        st.pyplot(figura_prophet)
-
-        st.markdown("""
-        #### Comentário sobre estimador ARIMA
-        > Note que alguns casos podem pode estar fora do intervalor
-        de confiança, isto acontece não só porque a quantidade de dados
-        disponível pode ser pequena, como também pode ocorrer devido
-        a erros de estimativas de sasonalidade, tendência e ruido.
+        É importante salientar que são estimativas, a tendência
+        sasonalidade e ruidos podem não estar tão calibrados, portanto
+        não leve essas estimativas como verdade absoluta, por mais que os
+        estimadores sejam baseados em modelos matemáticos ainda são
+        estimativas.
         """)
 
-        st.title('Análise de Componente Principal')
-        st.text("""
-        As componentes principais indicam não só a tendência do numero 
-        de casos da cidade, mas também como esta se comportanto a semana 
-        e o mês. O intervalo de tempo para análise da tendência é de 14 dias.
-        """)
-        figura_pca = executa_pca(dados_covid, opcao_cidade)
-        
-        st.pyplot(figura_pca)
-        st.markdown("""
-        #### Comentário sobre as componentes principais
-        > Os graficos acima tentam decompor a série temporam em suas componentes
-        principais. Indica a tendência, sasonalidade semanal e a sasonalidade anual.
-        A tendiência indica a basicamente a taxa de variação dos número de casos confirmados.
-        Já a sasonalidade semanal e mensal tentam captar quais os momentos de queda e aumento
-        no número de casos.
-        """)
+    
 
 
 
