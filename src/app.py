@@ -9,7 +9,7 @@ hoje = datetime.date.today()
 
 def main():
     st.title('Covid no Estado do Paraná e região')
-    st.text(f'{hoje}')
+    st.text(f'{hoje.day}/{hoje.month}/{hoje.year}',)
 
 
 
