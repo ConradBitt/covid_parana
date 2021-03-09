@@ -182,7 +182,6 @@ def main():
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
     st.plotly_chart(figura_cidade)
-    fonte_informações()
 
     
     opcao_estimativas = st.sidebar.selectbox('Deseja realizar estimativas de casos?', ['Não','Sim'])
@@ -205,6 +204,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+    fonte_informações()
 
 
