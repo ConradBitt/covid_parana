@@ -91,3 +91,6 @@ def baixa_base_de_dados_casos_gerais(ano,mes,dia):
         raise Exception('Não Tem dados disponíveis neste dia.')
 
     return base_de_dados
+
+
+if __name__ == '__main__'
