@@ -199,8 +199,8 @@ def main():
 def contato():
     st.sidebar.markdown(
         '*Este projeto ainda esta em desenvolvimento, ficaria grato com a contribuição*')
-    st.sidebar.markdown('Repositorio:[COVID-19 No PR e Região](https://github.com/ConradBitt/covid_parana)')
-    st.sidebar.markdown('Feito por [Conrado Bittencourt](https://github.com/ConradBitt)')
+    st.sidebar.markdown('Repositorio: [COVID-19 No PR e Região](https://github.com/ConradBitt/covid_parana)')
+    st.sidebar.markdown('Feito por: [Conrado Bittencourt](https://github.com/ConradBitt)')
 
 
 
