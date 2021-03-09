@@ -75,7 +75,7 @@ def exibe_evolucao_casos(dataframe, cidade):
         y = 'CASO_CONFIRMADO_NO_DIA',
         color_discrete_sequence = px.colors.sequential.Cividis
         )
-    fig.layout.title.text = f'Evolução dos casos em {cidade.title()}'
+    fig.layout.title.text = f'Evolução dos casos por dia em {cidade.title()}'
     fig.layout.xaxis.title.text = 'Data de confirmação'
     fig.layout.yaxis.title.text = 'Quantidade de casos'
 
