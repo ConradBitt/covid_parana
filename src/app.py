@@ -1,6 +1,6 @@
 import streamlit as st
-from load_data import baixa_base_de_dados_casos_gerais
-import datetime
+import load_data
+
 
 
 # Baixa base de dados do Governo do Paraná
