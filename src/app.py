@@ -24,7 +24,15 @@ def apresentacao():
         situação sanitária com respeito ao número de casos em
         cada cidade do estado do paraná. As informações são
         coletadas da secretaria de saúde do estado.
+
+        Você pode consultar a situação de cada cidade na barra de 
+        seleção ao lado.
     ''')
+
+def fonte_informações():
+    st.markdown('Fonte de informação:')
+    st.markdown(' 1. [Secretaria de Saúde Governo do Estado do Paraná](https://www.saude.pr.gov.br/Pagina/Coronavirus-COVID-19)')
+    
 
 def carrega_medias_moveis_cidades():
     medias_moveis = pd.read_csv(uri_medias_moveis, sep=';', engine='python')
@@ -70,6 +78,8 @@ def main():
 
     st.plotly_chart(figura_cidade)
 
+
 if __name__ == '__main__':
     main()
+    fonte_informações()
 
