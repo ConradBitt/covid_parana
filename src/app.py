@@ -107,7 +107,7 @@ def executa_prophet(dataframe, cidade):
     ax.figure.set_size_inches(10,6)
     ax.set_ylabel('Quantidade de casos', fontsize= 18)
     ax.set_xlabel('Data de Confirmação', fontsize = 18)
-    ax.legend(['Casos anteriores','Curva ajustada','Intervalo Confiança'])
+    ax.legend(['Casos anteriores','Curva de casos','Intervalo Confiança'])
     ax.set_title(f'Estimativa de casos para {cidade.title()}', fontsize=20, pad = 20)
 
     return fig
