@@ -59,7 +59,10 @@ def carrega_dados_gov_pr():
 
         return informes_covid
     except:
+
         raise Exception('Não foi possível carregar os dados de hoje.')
+    else:
+        return carrega_medias_moveis_cidades()
 
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
@@ -87,13 +90,13 @@ def main():
     st.title('Covid no Estado do Paraná e região')    
     apresentacao()
     
-    medias_moveis = carrega_medias_moveis_cidades()
+    dados_covid = carrega_dados_gov_pr()
 
-    cidades = cidades_do_parana(medias_moveis)
+    cidades = cidades_do_parana(dados_covid)
     
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
 
-    figura_cidade = exibe_evolucao_casos(medias_moveis, opcao_cidade)
+    figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
 
     st.plotly_chart(figura_cidade)
 
@@ -102,5 +105,4 @@ if __name__ == '__main__':
     main()
     fonte_informações()
 
-    carrega_dados_gov_pr()
 
