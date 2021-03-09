@@ -49,9 +49,9 @@ def exibe_evolucao_casos(dataframe, cidade):
     fig.layout.xaxis.title.text = 'Data de confirmação'
     fig.layout.yaxis.title.text = 'Quantidade de casos'
 
-    fig.update_layout(
-        margin = dict(l=20, r=20,t=30,b=10)
-    )
+    #fig.update_layout(
+    #    margin = dict(l=20, r=20,t=30,b=10)
+    #)
 
     return fig
 
