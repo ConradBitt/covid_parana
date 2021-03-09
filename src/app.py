@@ -2,14 +2,13 @@ import streamlit as st
 import datetime
 
 
-
-# Baixa base de dados do Governo do Paraná
-hoje = datetime.date.today()
-
-
 def main():
+    hoje = datetime.date.today()
     st.title('Covid no Estado do Paraná e região')
     st.text(f'{hoje.day}/{hoje.month}/{hoje.year}',)
+    informa_covid = carrega_dados(hoje)
+
+    st.table(informa_covid)
 
 
 
