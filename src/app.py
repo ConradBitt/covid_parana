@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
+import plotly.express as px 
 from matplotlib import pyplot as plt
+
 
 from informe_covid import InformeCovid
 from enderecos import uri_medias_moveis
@@ -36,24 +37,10 @@ def carrega_medias_moveis_cidades():
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
 
-def exibe_serie_temporal(dataframe,cidade, titulo):
-    sns.set_context('talk')
-    sns.set_style('darkgrid')
+def exibe_serie_temporal(dataframe, cidade, titulo):
+    fig = px.line(dataframe, x='DATA_CONFIRMACAO_DIVULGACAO', y='CASO_CONFIRMADO_NO_DIA')
+    fig.layout.title.text = f'Evolução dos casos em {cidade.title()}'
     
-    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade}"')
-    
-    fig, ax = plt.subplots()
-    
-    ax = sns.lineplot(data = dataframe,
-     x = 'DATA_CONFIRMACAO_DIVULGACAO',
-     y= 'CASO_CONFIRMADO_NO_DIA', 
-     label='Média Móvel (15)')
-    ax.set_title(f'{titulo} - {cidade}', pad=20)
-    ax.set_ylabel('Casos confirmados')
-    ax.set_xlabel('Data confirmação')
-    ax.figure.set_size_inches(15,10)
-    plt.xticks(rotation=45)
-
     return fig
 
 
