@@ -19,7 +19,7 @@ hoje = datetime.date.today()
 
 def apresentacao():
     st.markdown('''
-        Este trabalho tem como objetivo dar um panorama sobre a
+        Este trabalho tem como objetivo fornecer um panorama sobre a
         situação sanitária com respeito ao número de casos de COVID-19 em
         cada cidade do estado do Paraná. As informações são
         coletadas da secretaria de saúde do estado e são atualizadas a cada 
@@ -28,7 +28,7 @@ def apresentacao():
         Você pode consultar a situação de cada cidade na barra de 
         seleção ao lado. Algumas cidades não pertencem ao estado pois
         é possível que o paciente tenha feito um teste fora das regionais 
-        de saúde do Paraná.
+        de saúde do Paraná e só depois tenha recebido o resultado.
     ''')
 
 def fonte_informações():
@@ -47,7 +47,6 @@ def carrega_medias_moveis_cidades():
 
 def carrega_dados_gov_pr():
     informes = InformeCovid()
-
     try:
         informes_covid = informes.carrega_informe(hoje.year, hoje.month, hoje.day - 2)
 
@@ -57,6 +56,7 @@ def carrega_dados_gov_pr():
 
         return informes_covid
     except:
+        print('Não foi possível carregar os dados da secretaria de saúde...')
         return carrega_medias_moveis_cidades()
         
     
@@ -133,20 +133,20 @@ def executa_pca(dataframe, cidade):
     return fig
 
 def executa_estimativas(dados_covid, opcao_cidade):
-    st.title('Estimando Número de casos - (ARIMA)')
+    st.title('Estimando Número de casos - (Prophet)')
     st.text("""
-    Esta etapa pode demorar alguns segundos.
     A depender da quantidade de dados disponíveis em cada cidade
     o modelo vai tentar estimar a possível quantidade de casos
-    para os próximos 6 meses.
+    para os próximos 6 meses. Vale ressaltar que a disponibilidade
+    de amostras pode afetar as estimativas.
     """)
     figura_prophet = executa_prophet(dados_covid, opcao_cidade)
     st.pyplot(figura_prophet)
 
     st.markdown("""
-    #### Comentário sobre estimador ARIMA
-    > Note que alguns casos podem pode estar fora do intervalor
-    de confiança, isto acontece não só porque a quantidade de dados
+    #### Comentário sobre estimador Prophet
+    > Note que alguns casos podem estar fora do intervalo de
+    confiança, isto acontece não só porque a quantidade de dados
     disponível pode ser pequena, como também pode ocorrer devido
     a erros de estimativas de sasonalidade, tendência e ruido.
     """)
