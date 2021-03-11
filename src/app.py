@@ -174,6 +174,7 @@ def executa_estimativas(dados_covid, opcao_cidade):
 
 def main():
     st.title('Covid no Estado do Paraná e região')    
+    st.text(f'{hoje.day}/{hoje.month}/{hoje.year}')
     apresentacao()
     contato()
 

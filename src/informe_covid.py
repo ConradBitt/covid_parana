@@ -3,7 +3,7 @@ import pandas as pd
 
 class InformeCovid():
     """
-    Esta classa tem como objetivo carregar os informes
+    Esta classe tem como objetivo carregar os informes
     da covid do estado do paraná. Ao utilizar a função
     carrega_informe() o resultado será um dataframe 
     com o informe do dia, mes e ano.
