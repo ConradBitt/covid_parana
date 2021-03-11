@@ -229,9 +229,9 @@ def main():
         figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
         st.plotly_chart(figura_internacoes,use_container_width=True)
 
-        st.markdown(f"""
+        st.markdown("""
         Dados referêntes aos últimos 6 meses e sujeitos a atualização
-        Fonte: [Ministério da Saúde - Sistema de informações hospitalares do SUS (SIH/SUS)]({enderecos.uri_sih_sus})
+        Fonte: [Ministério da Saúde - Sistema de informações hospitalares do SUS (SIH/SUS)](https://datasus.saude.gov.br/acesso-a-informacao/producao-hospitalar-sih-sus/)
         """)
     else:
         pass
