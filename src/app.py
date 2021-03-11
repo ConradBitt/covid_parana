@@ -96,8 +96,10 @@ def exibe_evolucao_casos(dataframe, cidade):
 def exibe_internacoes_cidade(dataframe, cidade):
     cidade = cidade.upper()
     internacoes = dataframe[cidade]
+    internacoes.rename_axis('Data', inplace=True)
 
-    fig = px.bar(dataframe[cidade], x=dataframe.index, y = f'{cidade}', color=f'{cidade}')
+    fig = px.bar(dataframe[cidade], x=internacoes.index, y = f'{cidade}',
+     color=f'{cidade}', height=400, labels={f'{cidade}': 'Internados'})
     fig.layout.title.text = f'Internações por COVID-19 - {cidade}'
     fig.layout.xaxis.title.text = 'Mês de internação'
     fig.layout.yaxis.title.text = ''
@@ -107,7 +109,6 @@ def exibe_internacoes_cidade(dataframe, cidade):
         colorbar_title_side='top')
 
     return fig
-
 
 def executa_prophet(dataframe, cidade):
     dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
