@@ -231,6 +231,7 @@ def main():
 
         st.markdown("""
         Dados referêntes aos últimos 6 meses e sujeitos a atualização
+        
         Fonte: [Ministério da Saúde - Sistema de informações hospitalares do SUS (SIH/SUS)](https://datasus.saude.gov.br/acesso-a-informacao/producao-hospitalar-sih-sus/)
         """)
     else:
