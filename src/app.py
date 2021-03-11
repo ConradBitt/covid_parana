@@ -6,7 +6,7 @@ from fbprophet.plot import plot_plotly
 
 from matplotlib import pyplot as plt
 from informe_covid import InformeCovid
-from enderecos import uri_medias_moveis
+import enderecos
 import datetime
 
 
@@ -30,7 +30,7 @@ def fonte_informações():
     
 
 def carrega_medias_moveis_cidades():
-    medias_moveis = pd.read_csv(uri_medias_moveis, sep=';', engine='python')
+    medias_moveis = pd.read_csv(enderecos.uri_medias_moveis, sep=';', engine='python')
     if 'DATA_CONFIRMACAO_DIVULGACAO' in medias_moveis.columns:
         medias_moveis['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(medias_moveis['DATA_CONFIRMACAO_DIVULGACAO'])
         #medias_moveis = medias_moveis.set_index('DATA_CONFIRMACAO_DIVULGACAO')
