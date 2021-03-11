@@ -220,7 +220,7 @@ def main():
 
     if opcao_cidade in internacoes.columns:
         figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
-        st.pyplot(figura_internacoes)
+        st.plotly_chart(figura_internacoes,use_container_width=True)
     else:
         pass
 
