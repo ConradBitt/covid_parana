@@ -93,6 +93,22 @@ def exibe_evolucao_casos(dataframe, cidade):
     return fig
 
 
+def exibe_internacoes_cidade(dataframe, cidade):
+    cidade = cidade.upper()
+    internacoes = dataframe[cidade]
+
+    fig = px.bar(dataframe[cidade], x=dataframe.index, y = f'{cidade}', color=f'{cidade}')
+    fig.layout.title.text = f'Internações por COVID-19 - {cidade}'
+    fig.layout.xaxis.title.text = 'Mês de internação'
+    fig.layout.yaxis.title.text = ''
+    fig.update_coloraxes(
+        colorbar=dict(title='Internações'),
+        colorbar_title_font_size=22,
+        colorbar_title_side='top')
+
+    return fig
+
+
 def executa_prophet(dataframe, cidade):
     dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
     dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
@@ -195,12 +211,13 @@ def main():
     internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
 
-    st.dataframe(internacoes)
 
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
+    figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
     st.plotly_chart(figura_cidade)
+    st.plotly_chart(figura_internacoes)
 
     
     opcao_estimativas = st.sidebar.selectbox('Deseja realizar estimativas de casos?', ['Não','Sim'])
