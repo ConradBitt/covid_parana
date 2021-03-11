@@ -153,7 +153,7 @@ class InformeCovid():
         return dataframe
 
 
-    def atualiza_dados_anteriores():
+    def atualiza_dados_diarios():
         hoje = datetime.date.today()
         informe_covid = self.carrega_informe(hoje.year, hoje.month, hoje.day - 1)
 
