@@ -31,6 +31,7 @@ def apresentacao():
 def fonte_informações():
     st.markdown('Fonte de informação:')
     st.markdown(' 1. [Secretaria de Saúde Governo do Estado do Paraná](https://www.saude.pr.gov.br/Pagina/Coronavirus-COVID-19)')
+    st.markdown(' 2. Fonte: [Ministério da Saúde - Sistema de informações hospitalares do SUS (SIH/SUS)](https://datasus.saude.gov.br/acesso-a-informacao/producao-hospitalar-sih-sus/)')
 
 
 def contato():
@@ -230,9 +231,7 @@ def main():
         st.plotly_chart(figura_internacoes,use_container_width=True)
 
         st.markdown("""
-        Dados referêntes aos últimos 6 meses e sujeitos a atualização
-        
-        Fonte: [Ministério da Saúde - Sistema de informações hospitalares do SUS (SIH/SUS)](https://datasus.saude.gov.br/acesso-a-informacao/producao-hospitalar-sih-sus/)
+        Dados referêntes aos últimos 6 meses e sujeitos a atualização        
         """)
     else:
         pass
