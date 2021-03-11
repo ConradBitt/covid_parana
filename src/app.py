@@ -66,7 +66,7 @@ def carrega_dados_gov_pr(data):
 
 def carrega_internacoes_parana():
     carregador = CarregaInternacoes()
-    intenacoes = carregador.carregar_internacoes()
+    internacoes = carregador.carregar_internacoes()
     return internacoes
 
 
@@ -179,7 +179,6 @@ def executa_estimativas(dados_covid, opcao_cidade):
     Já a sasonalidade semanal e mensal tentam captar quais os momentos de queda e aumento
     no número de casos.
     """)
-
 
 
 def main():
