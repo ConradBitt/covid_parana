@@ -219,8 +219,20 @@ def main():
     st.plotly_chart(figura_cidade)
 
     if opcao_cidade in internacoes.columns:
+        st.markdown("""
+        # Procedimento hospitalar
+
+        Estas informações são retiradas do datasus e descrevem não só a 
+        quantidade de tratamentos por infecção pelo coronavirus (COVID-19) mas
+        também considera a diária permanência maior dos pacientes. 
+        """)
         figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
         st.plotly_chart(figura_internacoes,use_container_width=True)
+
+        st.markdown(f"""
+        Dados referêntes aos últimos 6 meses e sujeitos a atualização
+        Fonte: [Ministério da Saúde - Sistema de informações hospitalares do SUS (SIH/SUS)]({enderecos.uri_sih_sus})
+        """)
     else:
         pass
 
