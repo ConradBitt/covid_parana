@@ -215,9 +215,13 @@ def main():
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
-    figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
     st.plotly_chart(figura_cidade)
-    st.plotly_chart(figura_internacoes)
+
+    if opcao_cidade in internacoes.columns:
+        figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
+        st.plotly_chart(figura_internacoes)
+    else:
+        pass
 
     
     opcao_estimativas = st.sidebar.selectbox('Deseja realizar estimativas de casos?', ['Não','Sim'])
