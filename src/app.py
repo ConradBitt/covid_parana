@@ -9,13 +9,6 @@ from informe_covid import InformeCovid
 from enderecos import uri_medias_moveis
 import datetime
 
-# Definições 
-hoje = datetime.date.today()
-
-
-# demora carregar
-#informes = InformeCovid()
-#dados_informe = informes.carrega_informe_mm(hoje)
 
 def apresentacao():
     st.markdown('''
@@ -173,12 +166,14 @@ def executa_estimativas(dados_covid, opcao_cidade):
 
 
 def main():
+    # Definições 
+    hoje = datetime.date.today()
     st.title('Covid no Estado do Paraná e região')    
     st.text(f'{hoje.day}/{hoje.month}/{hoje.year}')
     apresentacao()
     contato()
 
-    dados_covid = carrega_dados_gov_pr()
+    dados_covid = carrega_dados_gov_pr(hoje)
     cidades = cidades_do_parana(dados_covid)
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
