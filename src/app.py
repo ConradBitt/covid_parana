@@ -65,9 +65,10 @@ def carrega_dados_gov_pr(data):
         
 
 def carrega_internacoes_parana():
-    internacoes = CarregaInternacoes()
-    intenacoes = internacoes.carregar_internacoes()
+    carregador = CarregaInternacoes()
+    intenacoes = carregador.carregar_internacoes()
     return internacoes
+
 
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
