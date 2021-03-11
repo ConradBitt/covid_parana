@@ -195,7 +195,7 @@ def main():
     internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
 
-    st.write(internacoes)
+    st.dataframe(internacoes)
 
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
