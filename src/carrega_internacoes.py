@@ -7,7 +7,7 @@ class CarregaInternacoes():
         pass
 
 
-    def pre_processamento_dados_internacoes(self,dataframe):
+    def __pre_processamento_dados_internacoes(self,dataframe):
         municipios = []
         for municipio in dataframe['Município']:
             municipios.append(unidecode(municipio[7:]).upper())
@@ -29,9 +29,9 @@ class CarregaInternacoes():
         dataframe.columns = pd.to_datetime(dataframe.columns)
         return dataframe.T
 
-    def carrega_internacoes(self):
+    def carregar_internacoes(self):
         uri_internacoes = enderecos.uri_internacoes
         internacoes = pd.read_csv(uri_internacoes,sep=';',skiprows = 4,skipfooter=14,thousands=',', engine='python', encoding='iso-8859-1')
-        internacoes = pre_processamento_dados_internacoes(internacoes)
+        internacoes = self.__pre_processamento_dados_internacoes(internacoes)
 
         return internacoes

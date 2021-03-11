@@ -1,13 +1,16 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px 
+import datetime
 from fbprophet import Prophet
 from fbprophet.plot import plot_plotly
-
 from matplotlib import pyplot as plt
+
 from informe_covid import InformeCovid
+from carrega_internacoes import CarregaInternacoes
 import enderecos
-import datetime
+
+
 
 
 def apresentacao():
@@ -24,10 +27,18 @@ def apresentacao():
         de saúde do Paraná e só depois tenha recebido o resultado.
     ''')
 
+
 def fonte_informações():
     st.markdown('Fonte de informação:')
     st.markdown(' 1. [Secretaria de Saúde Governo do Estado do Paraná](https://www.saude.pr.gov.br/Pagina/Coronavirus-COVID-19)')
-    
+
+
+def contato():
+    st.sidebar.markdown(
+        '*Este projeto ainda esta em desenvolvimento, ficaria grato com a contribuição*')
+    st.sidebar.markdown('Repositorio: [COVID-19 No PR e Região](https://github.com/ConradBitt/covid_parana)')
+    st.sidebar.markdown('Feito por: [Conrado Bittencourt](https://github.com/ConradBitt)')
+
 
 def carrega_medias_moveis_cidades():
     medias_moveis = pd.read_csv(enderecos.uri_medias_moveis, sep=';', engine='python')
@@ -52,10 +63,15 @@ def carrega_dados_gov_pr(data):
         print('Não foi possível carregar os dados da secretaria de saúde...')
         return carrega_medias_moveis_cidades()
         
-    
+
+def carrega_internacoes_parana():
+    internacoes = CarregaInternacoes()
+    intenacoes = internacoes.carregar_internacoes()
+    return internacoes
 
 def cidades_do_parana(dataframe):
     return dataframe.MUN_ATENDIMENTO.unique()
+
 
 def exibe_evolucao_casos(dataframe, cidade):
     casos_na_cidade = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
@@ -74,7 +90,6 @@ def exibe_evolucao_casos(dataframe, cidade):
     #)
 
     return fig
-
 
 
 def executa_prophet(dataframe, cidade):
@@ -125,6 +140,7 @@ def executa_pca(dataframe, cidade):
 
     return fig
 
+
 def executa_estimativas(dados_covid, opcao_cidade):
     st.title('Estimando Número de casos - (Prophet)')
     st.text("""
@@ -168,14 +184,21 @@ def executa_estimativas(dados_covid, opcao_cidade):
 def main():
     # Definições 
     hoje = datetime.date.today()
+   
     st.title('Covid no Estado do Paraná e região')    
     st.text(f'{hoje.day}/{hoje.month}/{hoje.year}')
+    
     apresentacao()
     contato()
 
     dados_covid = carrega_dados_gov_pr(hoje)
+    internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
+
+    st.write(internacoes)
+
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
+    
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
     st.plotly_chart(figura_cidade)
 
@@ -191,12 +214,6 @@ def main():
         estimadores sejam baseados em modelos matemáticos ainda são
         estimativas.
         """)
-
-def contato():
-    st.sidebar.markdown(
-        '*Este projeto ainda esta em desenvolvimento, ficaria grato com a contribuição*')
-    st.sidebar.markdown('Repositorio: [COVID-19 No PR e Região](https://github.com/ConradBitt/covid_parana)')
-    st.sidebar.markdown('Feito por: [Conrado Bittencourt](https://github.com/ConradBitt)')
 
 
 
