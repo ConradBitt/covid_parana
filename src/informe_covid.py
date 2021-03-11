@@ -153,8 +153,7 @@ class InformeCovid():
         return dataframe
 
 
-    def atualiza_dados_diarios():
-        hoje = datetime.date.today()
+    def atualiza_dados_diarios(hoje):
         informe_covid = self.carrega_informe(hoje.year, hoje.month, hoje.day - 1)
 
         move_average_15_por_cidade = informe_covid.groupby(['MUN_ATENDIMENTO','DATA_CONFIRMACAO_DIVULGACAO'])[['CASO_CONFIRMADO_NO_DIA','OBITO']].sum().rolling(14).mean()[14:].round()

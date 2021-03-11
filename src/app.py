@@ -45,10 +45,10 @@ def carrega_medias_moveis_cidades():
     return medias_moveis
 
 
-def carrega_dados_gov_pr():
+def carrega_dados_gov_pr(data):
     informes = InformeCovid()
     try:
-        informes_covid = informes.carrega_informe(hoje.year, hoje.month, hoje.day - 2)
+        informes_covid = informes.carrega_informe(data.year, data.month, data.day - 1)
 
         if 'DATA_CONFIRMACAO_DIVULGACAO' in informes_covid.columns:
             informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_CONFIRMACAO_DIVULGACAO'])
