@@ -82,15 +82,11 @@ def cidades_do_parana(dataframe):
 def exibe_evolucao_casos(dataframe, cidade):
     dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
 
-    st.dataframe(dataframe.head())
-
     dataframe = dataframe.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
 
     datas = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
     dataframe = dataframe.rolling(14).mean().iloc[14:,:]
     dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = datas.iloc[14:]
-
-    st.dataframe(dataframe.head())
     #dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
 
     fig = px.line(
@@ -242,6 +238,7 @@ def main():
     internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
 
+    st.dataframe(dados_covid.head())
 
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
