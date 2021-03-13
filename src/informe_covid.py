@@ -37,9 +37,9 @@ class InformeCovid():
 
         try:
             dados_informe_covid = self.__pre_processamento(dados_informe_covid)
-            print('pre processamento concluido...')
+            print('pré processamento concluido...')
         except:
-            print()
+            raise Exception('Não ocorreu o pré processamento...')
         
         return dados_informe_covid
 
