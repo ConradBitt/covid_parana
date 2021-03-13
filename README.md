@@ -5,16 +5,16 @@ Este trabalho tem como objetivo dar um panorama sobre a situação sanitária co
 ## Informações Principais
 Você pode consultar a evolução dos casos de cada cidade no grífico principal. Ao passar o cursor por cima da linha é possível ver algumas informações.
 
-<img src='https://raw.githubusercontent.com/ConradBitt/covid_parana/main/images/grafico_principal.png' width=80%>
+![grafico principal](https://raw.githubusercontent.com/ConradBitt/covid_parana/main/images/grafico_principal.png)
 
 ### Selecionando uma cidade
 Na caixa de seleção à esquerda é possível selecionar várias cidades do estado do paraná. É possível que algumas não sejam o estado do paraná, pois o governo do estado armazena os dados a partir do "municipio de confirmação / divulgação".
 
-<img src="https://raw.githubusercontent.com/ConradBitt/covid_parana/main/images/caixa_selecao_cidades.png" width=80%>
+![caixa de seleção das cidades](https://raw.githubusercontent.com/ConradBitt/covid_parana/main/images/caixa_selecao_cidades.png)
 
 ## Estimativas para o numero de casos 
 Quanto a opção "realizar estimativas" estivar marcada como "Sim" será realizada algumas estimativas baseada em séries temporais e modelos autoregressivos.
-<img src='https://raw.githubusercontent.com/ConradBitt/covid_parana/main/images/estimativas.png' width=80%>
+![estimativas](https://raw.githubusercontent.com/ConradBitt/covid_parana/main/images/estimativas.png)
 
 
 
