@@ -139,7 +139,7 @@ def executa_prophet(dataframe, cidade):
     dataframe.columns = ['ds','y']
     modelo_treinado = modelo.fit(dataframe)
 
-    futuro = modelo_treinado.make_future_dataframe(14, freq='D')
+    futuro = modelo_treinado.make_future_dataframe(6, freq='M')
     resultado_prophet = modelo_treinado.predict(futuro)
 
     fig, ax = plt.subplots()
@@ -236,7 +236,7 @@ def main():
     dados_covid = carrega_dados_gov_pr(hoje)
     internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
-    
+
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
