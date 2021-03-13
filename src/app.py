@@ -87,7 +87,7 @@ def exibe_evolucao_casos(dataframe, cidade):
     dataframe = dataframe.rolling(14).mean().iloc[14:,:]
     dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = datas.iloc[14:]
 
-
+    st.dataframe(dataframe.head())
     #dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
 
     fig = px.line(
