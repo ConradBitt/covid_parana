@@ -80,15 +80,17 @@ def cidades_do_parana(dataframe):
 
 
 def exibe_evolucao_casos(dataframe, cidade):
-    casos_na_cidade = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
-    casos_na_cidade = casos_na_cidade.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
-
-    indice = casos_na_cidade['DATA_CONFIRMACAO_DIVULGACAO']
-    casos_na_cidade = casos_na_cidade.rolling(14).mean()
-    casos_na_cidade['DATA_CONFIRMACAO_DIVULGACAO'] = indice
+    dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+    dataframe = dataframe.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
+    
+    indice = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
+    dataframe = dataframe.rolling(14).mean()
+    dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = indice
+    
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
 
     fig = px.line(
-        casos_na_cidade,
+        dataframe,
         x = 'DATA_CONFIRMACAO_DIVULGACAO',
         y = 'CASO_CONFIRMADO',
         color_discrete_sequence = px.colors.sequential.Cividis
