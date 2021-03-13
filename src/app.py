@@ -133,13 +133,13 @@ def executa_prophet(dataframe, cidade):
     dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
     
     modelo = Prophet()
-    modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
+    modelo.add_seasonality(name='monthly', period=2, fourier_order=6)
     
 
     dataframe.columns = ['ds','y']
     modelo_treinado = modelo.fit(dataframe)
 
-    futuro = modelo_treinado.make_future_dataframe(6, freq='M')
+    futuro = modelo_treinado.make_future_dataframe(2, freq='M')
     resultado_prophet = modelo_treinado.predict(futuro)
 
     fig, ax = plt.subplots()
