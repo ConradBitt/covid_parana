@@ -81,6 +81,9 @@ def cidades_do_parana(dataframe):
 
 def exibe_evolucao_casos(dataframe, cidade):
     dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+
+    st.dataframe(dataframe.head())
+
     dataframe = dataframe.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
 
     datas = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
