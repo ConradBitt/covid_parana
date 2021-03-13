@@ -134,7 +134,7 @@ def executa_prophet(dataframe, cidade):
     
     modelo = Prophet()
     modelo.add_seasonality(name='weekly', period=4, 
-    fourier_order=12, mode='multiplicative')
+    fourier_order=12, mode='aditive')
     
 
     dataframe.columns = ['ds','y']
