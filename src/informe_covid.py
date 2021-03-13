@@ -31,6 +31,7 @@ class InformeCovid():
 
         try:
             dados_informe_covid = pd.read_csv(self.__uri, sep=';')
+            dados_informe_covid = self.__pre_processamento(dados_informe_covid)
             return dados_informe_covid
         except:
             raise Exception(f'Não Tem dados disponíveis neste dia.\n{self.__uri}')

@@ -40,7 +40,7 @@ def contato():
     st.sidebar.markdown('Repositorio: [COVID-19 No PR e Região](https://github.com/ConradBitt/covid_parana)')
     st.sidebar.markdown('Feito por: [Conrado Bittencourt](https://github.com/ConradBitt)')
 
-
+@st.cache
 def carrega_medias_moveis_cidades():
     medias_moveis = pd.read_csv(enderecos.uri_medias_moveis, sep=';', engine='python')
     if 'DATA_CONFIRMACAO_DIVULGACAO' in medias_moveis.columns:
@@ -50,21 +50,25 @@ def carrega_medias_moveis_cidades():
     return medias_moveis
 
 
+@st.cache
 def carrega_dados_gov_pr(data):
+    
     informes = InformeCovid()
     try:
-        informes_covid = informes.carrega_informe(data.year, data.month, data.day - 1)
-
-        if 'DATA_CONFIRMACAO_DIVULGACAO' in informes_covid.columns:
-            informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_CONFIRMACAO_DIVULGACAO'])
+        informes_covid = informes.carrega_informe(data)
+        if 'DATA_DIAGNOSTICO' in informes_covid.columns:
+            
+            informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_DIAGNOSTICO'])
             informes_covid = informes_covid.set_index('DATA_CONFIRMACAO_DIVULGACAO')
 
         return informes_covid
     except:
-        print('Não foi possível carregar os dados da secretaria de saúde...')
-        return carrega_medias_moveis_cidades()
+        raise Exception('Não foi possível carregar dados')
+        pass
+        #print('Não foi possível carregar os dados da secretaria de saúde...')
+        #return carrega_medias_moveis_cidades()
         
-
+@st.cache
 def carrega_internacoes_parana():
     carregador = CarregaInternacoes()
     internacoes = carregador.carregar_internacoes()
@@ -72,24 +76,29 @@ def carrega_internacoes_parana():
 
 
 def cidades_do_parana(dataframe):
-    return dataframe.MUN_ATENDIMENTO.unique()
+    return dataframe['MUN_ATENDIMENTO'].unique()
 
 
 def exibe_evolucao_casos(dataframe, cidade):
     casos_na_cidade = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
+    casos_na_cidade = casos_na_cidade.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
+
+    indice = casos_na_cidade['DATA_CONFIRMACAO_DIVULGACAO']
+    casos_na_cidade = casos_na_cidade.rolling(14).mean()
+    casos_na_cidade['DATA_CONFIRMACAO_DIVULGACAO'] = indice
+
     fig = px.line(
         casos_na_cidade,
         x = 'DATA_CONFIRMACAO_DIVULGACAO',
-        y = 'CASO_CONFIRMADO_NO_DIA',
+        y = 'CASO_CONFIRMADO',
         color_discrete_sequence = px.colors.sequential.Cividis
         )
-    fig.layout.title.text = f'Evolução dos casos por dia em {cidade.title()}'
-    fig.layout.xaxis.title.text = 'Data de confirmação'
-    fig.layout.yaxis.title.text = 'Quantidade de casos'
 
-    #fig.update_layout(
-    #    margin = dict(l=20, r=20,t=30,b=10)
-    #)
+    fig.update_layout(
+        title = f'Evolução dos casos por dia em {cidade.title()}',
+        xaxis_title = 'Data de confirmação',
+        yaxis_title = 'Quantidade de casos'
+    )
 
     return fig
 
@@ -111,9 +120,16 @@ def exibe_internacoes_cidade(dataframe, cidade):
 
     return fig
 
+
 def executa_prophet(dataframe, cidade):
     dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
-    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
+    dataframe = dataframe.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
+    
+    indice = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
+    dataframe = dataframe.rolling(14).mean()
+    dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = indice
+    
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
     
     modelo = Prophet()
     modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
@@ -122,7 +138,7 @@ def executa_prophet(dataframe, cidade):
     dataframe.columns = ['ds','y']
     modelo_treinado = modelo.fit(dataframe)
 
-    futuro = modelo_treinado.make_future_dataframe(5, freq='M')
+    futuro = modelo_treinado.make_future_dataframe(14, freq='D')
     resultado_prophet = modelo_treinado.predict(futuro)
 
     fig, ax = plt.subplots()
@@ -141,7 +157,14 @@ def executa_prophet(dataframe, cidade):
 
 def executa_pca(dataframe, cidade):
     dataframe = dataframe.query(f'MUN_ATENDIMENTO == "{cidade.upper()}"')
-    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO_NO_DIA']]
+    dataframe = dataframe.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
+
+    indice = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
+    dataframe = dataframe.rolling(14).mean()
+    dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = indice
+    
+
+    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
     
     modelo = Prophet()
     modelo.add_seasonality(name='monthly', period=11, fourier_order=6)
