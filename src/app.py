@@ -133,8 +133,8 @@ def executa_prophet(dataframe, cidade):
     dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
     
     modelo = Prophet()
-    modelo.add_seasonality(name='monthly', period=6,
-     fourier_order=4, mode='multiplicative')
+    modelo.add_seasonality(name='monthly', period=2,
+     fourier_order=6, mode='multiplicative')
     
 
     dataframe.columns = ['ds','y']
