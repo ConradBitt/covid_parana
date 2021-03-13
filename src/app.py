@@ -56,7 +56,6 @@ def carrega_dados_gov_pr(data):
     informes = InformeCovid()
     try:
         informes_covid = informes.carrega_informe(data)
-        
             
         informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_DIAGNOSTICO'])
         informes_covid = informes_covid.set_index('DATA_CONFIRMACAO_DIVULGACAO')
@@ -237,9 +236,7 @@ def main():
     dados_covid = carrega_dados_gov_pr(hoje)
     internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
-
-    st.dataframe(dados_covid.head())
-
+    
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
