@@ -88,7 +88,7 @@ def exibe_evolucao_casos(dataframe, cidade):
     dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = datas.iloc[14:]
 
 
-    dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
+    #dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
 
     fig = px.line(
         dataframe,
