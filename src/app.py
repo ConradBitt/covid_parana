@@ -56,10 +56,10 @@ def carrega_dados_gov_pr(data):
     informes = InformeCovid()
     try:
         informes_covid = informes.carrega_informe(data)
-        if 'DATA_DIAGNOSTICO' in informes_covid.columns:
+        
             
-            informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_DIAGNOSTICO'])
-            informes_covid = informes_covid.set_index('DATA_CONFIRMACAO_DIVULGACAO')
+        informes_covid['DATA_CONFIRMACAO_DIVULGACAO'] = pd.to_datetime(informes_covid['DATA_DIAGNOSTICO'])
+        informes_covid = informes_covid.set_index('DATA_CONFIRMACAO_DIVULGACAO')
 
         return informes_covid
     except:
