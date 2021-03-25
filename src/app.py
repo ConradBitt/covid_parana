@@ -83,9 +83,9 @@ def exibe_evolucao_casos(dataframe, cidade):
 
     dataframe = dataframe.groupby(['DATA_CONFIRMACAO_DIVULGACAO'], as_index=True).sum().reset_index()
 
-    datas = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
-    dataframe = dataframe.rolling(14).mean().iloc[14:,:]
-    dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = datas.iloc[14:]
+    #dataframe = dataframe['DATA_CONFIRMACAO_DIVULGACAO']
+    #dataframe = dataframe.rolling(14).mean().iloc[14:,:]
+    #dataframe['DATA_CONFIRMACAO_DIVULGACAO'] = datas.iloc[14:]
     #dataframe = dataframe[['DATA_CONFIRMACAO_DIVULGACAO', 'CASO_CONFIRMADO']]
 
     fig = px.line(
