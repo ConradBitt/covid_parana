@@ -23,7 +23,7 @@ class InformeCovid():
     def carrega_informe(self, data):
         ano = data.year
         mes = data.month
-        dia = data.day - 3
+        dia = data.day
 
         self._data_informe = datetime.date(ano, mes, dia)
         self.dia, self.mes, self.ano = self.__ajusta_data(self._data_informe)
