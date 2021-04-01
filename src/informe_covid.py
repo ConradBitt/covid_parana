@@ -41,6 +41,7 @@ class InformeCovid():
         except:
             raise Exception('Não ocorreu o pré processamento...')
         
+        print('dados carregados com sucesso...')
         return dados_informe_covid
 
 
