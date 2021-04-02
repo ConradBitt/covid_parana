@@ -23,7 +23,7 @@ class InformeCovid():
     def carrega_informe(self, data):
         ano = data.year
         mes = data.month
-        dia = data.day
+        dia = data.day - 1
 
         self._data_informe = datetime.date(ano, mes, dia)
         self.dia, self.mes, self.ano = self.__ajusta_data(self._data_informe)
@@ -41,7 +41,7 @@ class InformeCovid():
         except:
             raise Exception('Não ocorreu o pré processamento...')
         
-        print('dados carregados com sucesso...')
+        print('dados carregados com sucesso...t')
         return dados_informe_covid
 
 
