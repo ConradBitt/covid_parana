@@ -239,7 +239,6 @@ def main():
     dados_covid = carrega_dados_gov_pr(hoje)
     internacoes = carrega_internacoes_parana()
     cidades = cidades_do_parana(dados_covid)
-
     opcao_cidade = st.sidebar.selectbox('Selecione uma cidade', cidades)
     
     figura_cidade = exibe_evolucao_casos(dados_covid, opcao_cidade)
@@ -251,7 +250,10 @@ def main():
 
         Estas informações são retiradas do datasus e descrevem não só a 
         quantidade de tratamentos por infecção pelo coronavirus (COVID-19) mas
-        também considera a diária permanência maior dos pacientes. 
+        também considera a diária permanência maior dos pacientes. É importante
+        salientar que o procedimento hospitalar são as internações e a média permanência,
+        esses valores podem ser atualizados no futuro devido à novos processamentos feito
+        pelos estabelecimentos de saúde.
         """)
         figura_internacoes = exibe_internacoes_cidade(internacoes, opcao_cidade)
         st.plotly_chart(figura_internacoes,use_container_width=True)
@@ -263,20 +265,15 @@ def main():
         pass
 
     
-    opcao_estimativas = st.sidebar.selectbox('Deseja realizar estimativas de casos?', ['Não','Sim'])
-    if opcao_estimativas == 'Sim':
-        executa_estimativas(dados_covid, opcao_cidade)
-        st.markdown('## Comentários finais')
-        st.text("""
-        É importante salientar que são estimativas, a tendência
-        sasonalidade e ruidos podem não estar tão calibrados, portanto
-        não leve essas estimativas como verdade absoluta, por mais que os
-        estimadores sejam baseados em modelos matemáticos ainda são
-        estimativas.
-        """)
-
-
-
+    executa_estimativas(dados_covid, opcao_cidade)
+    st.markdown('## Comentários finais')
+    st.text("""
+    É importante salientar que são estimativas, a tendência
+    sasonalidade e ruidos podem não estar tão calibrados, portanto
+    não leve essas estimativas como verdade absoluta, por mais que os
+    estimadores sejam baseados em modelos matemáticos ainda são
+    estimativas.
+    """)
 
 
 if __name__ == '__main__':
