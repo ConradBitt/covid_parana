@@ -67,6 +67,7 @@ def carrega_dados_gov_pr(data):
         #return carrega_medias_moveis_cidades()
 
 
+@st.cache
 def carrega_internacoes_parana():
     carregador = CarregaInternacoes()
     internacoes = carregador.carregar_internacoes()
