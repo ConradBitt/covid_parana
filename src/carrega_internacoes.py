@@ -18,13 +18,13 @@ class CarregaInternacoes():
 
         #  Modificar esta linha, pois a cada mês de internação
         # deve-se adicionar um elemento à tupla
-        index = (
+        index = [
             'MUN_ATENDIMENTO', '2020-03', '2020-04',
             '2020-05', '2020-06', '2020-07',
             '2020-08', '2020-09', '2020-10', 
             '2020-11', '2020-12', '2021-01',
             '2021-02', '2021-03'
-            )
+            ]
 
         dataframe.index = index
         dataframe = dataframe.T
