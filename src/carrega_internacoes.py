@@ -34,5 +34,4 @@ class CarregaInternacoes():
         uri_internacoes = enderecos.uri_internacoes
         internacoes = pd.read_csv(uri_internacoes,sep=';',skiprows = 4,skipfooter=14,thousands=',', engine='python', encoding='iso-8859-1')
         internacoes = self.__pre_processamento_dados_internacoes(internacoes)
-
         return internacoes
